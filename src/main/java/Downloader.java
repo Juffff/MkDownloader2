@@ -84,41 +84,44 @@ public class Downloader {
 
             for (int i = 0; i < urlList.size(); i++) {
                 URL downloadLink = new URL(urlList.get(i));
-                System.out.println(downloadLink);
-                URLConnection downloadConnection = downloadLink.openConnection();
-                String filename = "";
+                if (downloadLink.toString().contains("0x0")) {
+                    System.out.println(downloadLink);
 
-                if (conformityMap.containsKey(productID)) {
-                    filename = path + File.separator + conformityMap.get(productID) + "#" + (i + 1) + ".jpg";
-                } else {
-                    filename = path + File.separator + productID + "#" + (i + 1) + ".jpg";
-                }
+                    URLConnection downloadConnection = downloadLink.openConnection();
+                    String filename = "";
 
-
-                File f = new File(filename);
-                try {
-
-                    f.createNewFile();
-                } catch (IOException x) {
-                    x.printStackTrace();
-                }
-
-                try {
-                    BufferedInputStream bis = new BufferedInputStream(downloadConnection.getInputStream());
-                    FileOutputStream fos = new FileOutputStream(f);
-                    int ch;
-                    while ((ch = bis.read()) != -1) {
-                        fos.write(ch);
+                    if (conformityMap.containsKey(productID)) {
+                        filename = path + File.separator + conformityMap.get(productID) + "#" + (i + 1) + ".jpg";
+                    } else {
+                        filename = path + File.separator + productID + "#" + (i + 1) + ".jpg";
                     }
-                    bis.close();
-                    fos.flush();
-                    fos.close();
-                } catch (Exception e) {
-                    System.out.println(e.toString());
+
+
+                    File f = new File(filename);
+                    try {
+
+                        f.createNewFile();
+                    } catch (IOException x) {
+                        x.printStackTrace();
+                    }
+
+                    try {
+                        BufferedInputStream bis = new BufferedInputStream(downloadConnection.getInputStream());
+                        FileOutputStream fos = new FileOutputStream(f);
+                        int ch;
+                        while ((ch = bis.read()) != -1) {
+                            fos.write(ch);
+                        }
+                        bis.close();
+                        fos.flush();
+                        fos.close();
+                    } catch (Exception e) {
+                        System.out.println(e.toString());
+                    }
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
     }
